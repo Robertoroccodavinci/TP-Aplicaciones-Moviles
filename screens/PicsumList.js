@@ -1,10 +1,10 @@
 import * as React from "react";
-import { useScrollToTop } from "@react-navigation/native";
 import { StyleSheet, Text, View, ScrollView, StatusBar, Image } from "react-native";
 import { Card, Button, Divider, FAB, Modal, Portal, Paragraph, Provider, ActivityIndicator } from "react-native-paper";
 import axios from "axios";
 
 export default class PicsumList extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {  datos: [],
@@ -14,17 +14,23 @@ export default class PicsumList extends React.Component {
                     loadVisible: true,
                   };
     this.setVisibility = this.setVisibility.bind(this);
+    this.myRef = React.createRef();
   }
+  
+  
 
   componentDidMount() {
     this.fetchList(this.state.cantP);
+  }
+  componentDidUpdate(){
+    this.myRef.current.scrollTo({x:0,y:0, animated:true});
   }
 
   fetchList(value) {
     this.setState({ estado: 0 });
     this.setVisibility(true);
     axios
-      .get(this.state.url + value.toString() + "&limit=5")
+      .get(this.state.url + value.toString() + "&limit=30")
       .then((response) => {
         this.setState({ estado: response.status });
         this.setState({ datos: response.data });
@@ -47,90 +53,39 @@ export default class PicsumList extends React.Component {
     return (
       <View style={styles.container}>
         <Provider>
-          <ScrollView>
+          <ScrollView ref={this.myRef} >
             <StatusBar hidden />
           
             {/* Modal - Animacion de carga */}
             <Portal>
               <Modal visible={this.state.loadVisible}>
-                <ActivityIndicator
-                  animating={true}
-                  backgroundColor={"#E6EAF0"}
-                  height={650}
-                  size={60}
-                  color={"#f9a825"}
-                />
+                <ActivityIndicator animating={true} backgroundColor={"#E6EAF0"} height={650} size={60} color={"#f9a825"} />
               </Modal>
             </Portal>
 
-            <Card
-              style={{
-                borderRadius: 30,
-                elevation: 3,
-                flexDirection: "row",
-                backgroundColor: "#b3e5fc",
-              }}
-            >
-              <FAB
-                disabled={this.state.cantP <= 1 ? true : false}
-                style={{
-                  marginRight: "auto",
-                  backgroundColor: "#f9a825",
-                  position: "absolute",
-                }}
-                mode="contained"
-                icon="arrow-left-bold"
-                color="black"
-                onPress={() => this.fetchList(this.state.cantP - 1)}
-              ></FAB>
+            <Card style={{ borderRadius: 30, elevation: 3, flexDirection: "row", backgroundColor: "#b3e5fc", }} >
+              <FAB disabled={this.state.cantP <= 1 ? true : false}
+                   style={{ marginRight: "auto", backgroundColor: "#f9a825", position: "absolute", }}
+                   mode="contained" icon="arrow-left-bold" color="black" onPress={() => this.fetchList(this.state.cantP - 1)} > 
+              </FAB>
 
-              <Paragraph
-                style={{
-                  alignSelf: "center",
-                  marginHorizontal: "auto",
-                  color: "black",
-                  fontSize: 18,
-                  padding: 14,
-                }}
-              >
+              <Paragraph style={{ alignSelf: "center", marginHorizontal: "auto", color: "black", fontSize: 18, padding: 14, }} >
                 Página: {this.state.cantP}
               </Paragraph>
 
-              <FAB
-                style={{
-                  marginLeft: "auto",
-                  backgroundColor: "#f9a825",
-                  position: "absolute",
-                  right: 0,
-                }}
-                mode="contained"
-                icon="arrow-right-bold"
-                color="black"
-                onPress={() => this.fetchList(this.state.cantP + 1)}
-              ></FAB>
+              <FAB style={{ marginLeft: "auto", backgroundColor: "#f9a825", position: "absolute", right: 0, }}
+                   mode="contained" icon="arrow-right-bold" color="black" onPress={() => this.fetchList(this.state.cantP + 1)} >
+              </FAB>
             </Card>
 
             {this.state.datos.map((element) => (
               <View key={element.id}>
                 <Card style={styles.card}>
-                  <Image
-                    source={{
-                      uri:
-                        "https://picsum.photos/id/" + element.id + "/400/400",
-                    }}
-                    style={{ height: 300, borderRadius: 10 }}
-                  />
+                  <Image source={{ uri: "https://picsum.photos/id/" + element.id + "/400/400", }}
+                         style={{ height: 300, borderRadius: 10 }} />
                   <Card.Content>
-                    <Button
-                      color="black"
-                      style={styles.boton}
-                      onPress={() =>
-                        this.props.navigation.navigate("PicsumDetails", {
-                          data: element,
-                        })
-                      }
-                    >
-                      {" "}
+                    <Button color="black" style={styles.boton}
+                      onPress={() => this.props.navigation.navigate("PicsumDetails", { data: element, }) } >
                       Detalles
                     </Button>
                   </Card.Content>
@@ -139,53 +94,19 @@ export default class PicsumList extends React.Component {
               </View>
             ))}
 
-            <Card
-              style={{
-                borderRadius: 30,
-                elevation: 3,
-                flexDirection: "row",
-                backgroundColor: "#b3e5fc",
-                marginTop:10,
-                marginBottom:5
-              }}
-            >
-             <FAB
-                disabled={this.state.cantP <= 1 ? true : false}
-                style={{
-                  marginRight: "auto",
-                  backgroundColor: "#f9a825",
-                  position: "absolute",
-                }}
-                mode="contained"
-                icon="arrow-left-bold"
-                color="black"
-                onPress={() => this.fetchList(this.state.cantP - 1)}
-              ></FAB>
+            <Card style={{ borderRadius: 30, elevation: 3, flexDirection: "row", backgroundColor: "#b3e5fc", marginTop:10, marginBottom:5 }} >
+               <FAB disabled={this.state.cantP <= 1 ? true : false}
+                    style={{ marginRight: "auto", backgroundColor: "#f9a825", position: "absolute", }}
+                    mode="contained" icon="arrow-left-bold" color="black" onPress={() => this.fetchList(this.state.cantP - 1)} >
+               </FAB>
 
-              <Paragraph
-                style={{
-                  alignSelf: "center",
-                  marginHorizontal: "auto",
-                  color: "black",
-                  fontSize: 18,
-                  padding: 14,
-                }}
-              >
+              <Paragraph style={{ alignSelf: "center", marginHorizontal: "auto", color: "black", fontSize: 18, padding: 14, }} >
                 Página: {this.state.cantP}
               </Paragraph>
 
-              <FAB
-                style={{
-                  marginLeft: "auto",
-                  backgroundColor: "#f9a825",
-                  position: "absolute",
-                  right: 0,
-                }}
-                mode="contained"
-                icon="arrow-right-bold"
-                color="black"
-                onPress={() => this.fetchList(this.state.cantP + 1)}
-              ></FAB>
+              <FAB style={{ marginLeft: "auto", backgroundColor: "#f9a825", position: "absolute", right: 0, }}
+                   mode="contained" icon="arrow-right-bold" color="black" onPress={() => this.fetchList(this.state.cantP + 1) } >
+              </FAB>
             </Card>
           </ScrollView>
         </Provider>

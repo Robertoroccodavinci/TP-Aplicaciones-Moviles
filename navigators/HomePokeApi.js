@@ -17,20 +17,22 @@ export default class HomePokeApi extends React.Component {
   render() {
     return (
       <Stack.Navigator initialRouteName="PokeList"
-                        screenOptions={{headerStyle: { backgroundColor: "#ffee58", elevation: 5 },
+                        screenOptions={{headerStyle: { backgroundColor: "#ffee58", elevation: 5 }, 
                                         headerRight: () => ( <FAB small icon="home" color="#000000" style={styles.fab}
-                                                                onPress={() => this.props.navigation.navigate("Home")} />
+                                                                onPress={() => this.props.navigation.navigate("HomeScreen")} />
                                                         ),
                                         headerTintColor: "#000000",
                                     }} >
         
         <Stack.Screen name="PokeList" component={PokeList}
-                      options={{ stackIcon: ({focused, size}) => ( <Ionicons name="home" size={size} 
-                                                                              color={focused ? 'black' : '#ccc'}/>
+                      options={{ title:"Lista" , headerLeft:null,
+                                 stackIcon: ({focused, size}) => ( <Ionicons name="home" size={size} 
+                                                                             color={focused ? 'black' : '#ccc'}
+                                                                             />
                                                                   ),
                               }} />
 
-        <Stack.Screen name="PokeApi" component={PokeApi} />
+        <Stack.Screen name="PokeApi" component={PokeApi} options={{  headerShown:false }} />
 
       </Stack.Navigator>
     );
@@ -42,5 +44,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     backgroundColor: "#f44336",
+    
+    elevation:5,
   },
 });

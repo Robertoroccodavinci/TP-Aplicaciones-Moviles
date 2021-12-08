@@ -21,7 +21,7 @@ export default class Picsum extends React.Component {
           headerStyle: { backgroundColor: "#64b5f6", elevation: 5 },
           headerRight: () => (
             <FAB
-              onPress={() => this.props.navigation.navigate("Home")}
+              onPress={() => this.props.navigation.navigate("HomeScreen")}
               small              
               icon="home"
               color="#000000"
@@ -32,7 +32,8 @@ export default class Picsum extends React.Component {
         }}
       >
         <Stack.Screen name="APIPicsum" component={APIPicsum}
-                      options={{ 
+                      options={{ title:'API Picsum Home ',
+                            headerLeft:null,
                             drawerIcon: ({focused, size}) => (
                             <Ionicons
                             name="home"
@@ -41,8 +42,8 @@ export default class Picsum extends React.Component {
                             ),
                       }} 
         />
-        <Stack.Screen name="PicsumList" component={PicsumList} />
-        <Stack.Screen name="PicsumDetails" component={PicsumDetails} />
+        <Stack.Screen name="PicsumList" component={PicsumList} options={{ title:'Lista' }} />
+        <Stack.Screen name="PicsumDetails" component={PicsumDetails} options={{ title:'Detalles' }} />
       </Stack.Navigator>
     );
   }

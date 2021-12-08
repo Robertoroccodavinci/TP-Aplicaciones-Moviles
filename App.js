@@ -1,52 +1,29 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import {Ionicons} from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { NavigationContainer } from "@react-navigation/native";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createStackNavigator } from "@react-navigation/stack";
 
-const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
 
-import HomeScreen from "./screens/HomeScreen";
-
-import Picsum from "./navigators/Picsum";
-import HomePokeApi from "./navigators/HomePokeApi";
+import Home from "./navigators/Home";
+import LoginScreen from "./screens/LoginScreen";
 
 export default function App() {
+
   return (
+
     <NavigationContainer>
       <StatusBar hidden />
 
-      <Drawer.Navigator initialRouteName="Home"
-                        screenOptions={{
-                          headerStyle: { backgroundColor: "#5c6bc0", elevation: 5 },
-                          headerTintColor: "#fff",
-                          drawerStyle: {
-                            backgroundColor: '#dce0fb',
-                            width: 250,
-                          },
-                          drawerActiveBackgroundColor: '#ffbb93',
-                          drawerActiveTintColor:'black'
-                        }} >
+      <Stack.Navigator initialRouteName="Login">
 
-        <Drawer.Screen name="Home" component={HomeScreen} 
-                       options={{  drawerIcon: ({focused, size}) => (
-                                    <Ionicons name="home" size={size} color={focused ? 'black' : '#ccc'}/> ),
-                       }} />
+        <Stack.Screen name="Login" component={LoginScreen} options={{  headerShown: false }} />
 
-        <Drawer.Screen name="Picsum" component={Picsum}
-                       options={{  headerShown: false,
-                                   drawerIcon: ({focused, size}) => (
-                                    <Ionicons name="md-images" size={size} color={focused ? 'black' : '#ccc'}/> ),
-                       }} />
-        {/* <Drawer.Screen name="HomePokeApi" component={HomePokeApi}
-                       options={{  headerShown: false,
-                                   drawerIcon: ({focused, size}) => (
-                                    <MaterialCommunityIcons  name="pokeball" size={size} color={focused ? 'black' : '#ccc'}/> ),
-                       }} /> */}
+        <Stack.Screen name="Home" component={Home} options={{  headerShown: false }} />
+        
+      </Stack.Navigator>
 
-      </Drawer.Navigator>
     </NavigationContainer>
   );
 }
